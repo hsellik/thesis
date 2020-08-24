@@ -1,0 +1,15 @@
+*.class
+*.lst
+.idea/*
+*.iml
+*.xml
+*.pyc
+env
+**/models/**
+**/data/**
+# code2seq is a folder meant for python virtualenv
+code2seq
+wandb
+error_log.txt
+tensorboard_logs/*
+**/statistics.txt

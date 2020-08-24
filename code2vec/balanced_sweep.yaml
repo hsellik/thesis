@@ -1,0 +1,62 @@
+# Sweep configuration for hyper-parameter selection using wandb Sweeping
+# https://docs.wandb.com/sweeps/quickstart
+program: code2vec.py
+command:
+  - python3
+  - ${program}
+  - "--data"
+  - "data/java_dataset/java_dataset"
+  - "--test"
+  - "data/java_dataset/java_dataset.val.c2v"
+  - "--preprocess"
+  - "true"
+  - "--realistic_ratio"
+  - "false"
+  - ${args}
+method: bayes
+metric:
+  name: val_precision
+  goal: maximize
+parameters:
+  TRAIN_BATCH_SIZE:
+    min: 512
+    max: 2048
+  MAX_CONTEXTS:
+    min: 140
+    max: 260
+  MAX_TOKEN_VOCAB_SIZE:
+    min: 800000
+    max: 1800000
+  MAX_PATH_VOCAB_SIZE:
+    min: 600000
+    max: 1300000
+  DEFAULT_EMBEDDINGS_SIZE:
+    min: 100
+    max: 160
+  DROPOUT_KEEP_RATE:
+    min: 0.6
+    max: 0.9
+
+# Model hyper-parameters as arguments for parameter tuning
+##### config.TRAIN_BATCH_SIZE = 1024
+# Batch size in training.
+#### config.TEST_BATCH_SIZE = config.TRAIN_BATCH_SIZE
+# Batch size in evaluating. Affects only the evaluation speed and memory consumption, does not affect the results.
+#### config.MAX_CONTEXTS = 200
+#  The number of contexts to use in each example.
+#### config.MAX_TOKEN_VOCAB_SIZE = 1301136
+#  The max size of the token vocabulary.
+#### config.MAX_PATH_VOCAB_SIZE = 911417
+#  The max size of the path vocabulary.
+#### config.DEFAULT_EMBEDDINGS_SIZE = 128
+#  Default embedding size to be used for token and path if not specified otherwise.
+#### config.TOKEN_EMBEDDINGS_SIZE = config.EMBEDDINGS_SIZE
+#  Embedding size for tokens.
+#### config.PATH_EMBEDDINGS_SIZE = config.EMBEDDINGS_SIZE
+#  Embedding size for paths.
+#### config.CODE_VECTOR_SIZE = config.PATH_EMBEDDINGS_SIZE + 2 * config.TOKEN_EMBEDDINGS_SIZE
+#  Size of code vectors.
+ #### config.TARGET_EMBEDDINGS_SIZE = config.CODE_VECTOR_SIZE
+#  Embedding size for target words.
+#### config.DROPOUT_KEEP_RATE = 0.75
+#  Dropout rate used during training.

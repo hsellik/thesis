@@ -1,0 +1,87 @@
+package Tokenizer;
+
+import java.io.IOException;
+import foo;
+import java.util.ArrayList;
+
+public class ExtractFeaturesTask implements Callable<Void> {
+
+      public String exampleMethod(String argument) throws IndexOutOfBoundsException {
+          // MethodCallExpr
+          System.out.println("Testing");
+          // Calling constructor
+          BugramVisitor bugramVisitor = new BugramVisitor(null);
+          // Initializing array
+          int[] data = {10,20,30,40,50,60,71,80,90,91};
+          // if Statement
+          String a = "a";
+          if (a.equals("b")) {
+              a = "a";
+          }
+          // else if statement
+          else if (a.equals("c")) {
+              a = "a";
+          }
+          else {
+              System.out.println("testing");
+              System.out.println("testing");
+              a = "b";
+          }
+          // for i statement
+          for (int i=0; i<10 ; i++) {
+              System.out.println("testing");
+              for (int ab=0; ab<10 ; ab++) {
+                            System.out.println("testing");
+                        }
+               System.out.println("testing");
+          }
+          // for each statement
+          for (int i : data) {
+              System.out.println("testing");
+          }
+          // do while statement
+          int ii = 0;
+          do {
+              // break
+              if (ii == 7) break;
+              ii++;
+              // continue statement
+              if (ii == 4) continue;
+          } while (ii < 10);
+
+          try
+          {
+              // other statements
+              throw new Exception();
+          }
+          catch (SQLException | IOException ex)
+          {
+              System.out.println("Illegal puzzle.");
+          }
+
+          assert(data != null);
+
+          // switch
+          switch (a) {
+              case "b": {
+                  System.out.println("testing");
+              }
+              case "a": {
+                  System.out.println("testing2");
+              }
+          }
+          //synchronized block
+          synchronized (a) {
+              a = "b";
+          }
+
+          // while loop
+          int whileVariable = 0;
+          while (whileVariable < 10) {
+              whileVariable++;
+          }
+
+          // a return statement
+          return "";
+      }
+}

@@ -1,0 +1,144 @@
+.component-visualize-ast {
+
+}
+
+@media screen and (max-width: 960px) {
+    .smaller-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+@media screen and (min-width: 961px) {
+    .smaller-container {
+        width: 100%;
+        height: 80vh;
+        margin-top: 10px;
+    }
+}
+
+.rd3t-tree-container {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.rd3t-tree-col {
+    height: 70vh;
+}
+
+.node-wrapper {
+    display: table;
+    width: 100%;
+    text-align: center;
+    word-break: break-all;
+}
+
+.node-content {
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: bold;
+    color: black;
+}
+
+.red-border {
+    border: 2px solid red;
+}
+
+.blue-border {
+    border: 2px solid blue;
+}
+
+.marker7 {
+    background-color: rgba(255, 255, 0, 1);
+    position: absolute;
+}
+
+.marker6 {
+    background-color: rgba(245, 212, 0, 1);
+    position: absolute;
+}
+
+.marker5 {
+    background-color: rgba(245, 180, 0, 1);
+    position: absolute;
+}
+
+.marker4 {
+    background-color: rgba(245, 143, 0, 1);
+    position: absolute;
+}
+
+.marker3 {
+    background-color: rgba(245, 106, 0, 1);
+    position: absolute;
+}
+.marker2 {
+    background-color: rgba(255, 84, 0, 1);
+    position: absolute;
+}
+
+.marker1 {
+    background-color: rgba(245, 52, 0, 1);
+    position: absolute;
+}
+
+.marker0 {
+    background-color: rgba(245, 0, 16, 1);
+    position: absolute;
+}
+
+.btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-wrapper hr {
+    width: 100%;
+}
+
+/*Loading button*/
+.loading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-wrapper .loading {
+    width: 100%;
+    height: 100%;
+}
+.loading-wrapper .loading.circled .circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: 5px solid rgb(0, 166, 214);
+    border-top-color: transparent;
+    display: block;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+.loading-wrapper .loading.circled.crcld4 {
+    animation: none;
+}
+.loading-wrapper .loading.circled.crcld4 .circle {
+    animation: rotate 1s ease-in-out infinite;
+    margin-left: -25px;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotateReverse {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}

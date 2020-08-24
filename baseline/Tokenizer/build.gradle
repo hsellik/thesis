@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+repositories {
+    maven {
+        name 'nexus'
+        url 'https://nexushost.is.adyen.com/repository/adyen-main/'
+    }
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.7@jar'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.7@jar'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7@jar'
+    implementation files('libs/javaparser-core-3.15.18.jar')
+    implementation 'commons-cli:commons-cli:1.2@jar'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2@jar'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2@jar'
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.5.2')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "Tokenizer.App"
+    }
+    archiveBaseName = 'Tokenizer-0.0.1-SNAPSHOT'
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

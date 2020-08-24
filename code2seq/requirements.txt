@@ -1,0 +1,7 @@
+tensorflow==1.13.1
+wandb==0.8.29 #For transporting training metrics to https://app.wandb.ai
+pyyaml==5.3 #In some systems wandb does not work without explicitly adding pyyaml
+pillow==7.0.0 # For logging confusion matrix with wandb
+matplotlib==3.1.3
+scikit-learn==0.22.1
+numpy==1.18.1

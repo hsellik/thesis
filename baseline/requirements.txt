@@ -1,0 +1,5 @@
+scikit-learn==0.23.1
+matplotlib==3.2.1
+wandb==0.8.36
+pyyaml==5.3 #In some systems wandb does not work without explicitly adding pyyaml
+pillow==7.0.0 # For logging confusion matrix with wandb

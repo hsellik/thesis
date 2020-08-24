@@ -1,0 +1,15 @@
+*.class
+*.lst
+**/models/**
+**/data/**
+**/.idea/**
+*.tar.gz
+**/log.txt
+models/
+wandb
+# code2vec folder is for the python virtualenv
+code2vec
+/data/
+tensorboard_logs/*
+**/statistics.txt
+newContainingNodes.txt

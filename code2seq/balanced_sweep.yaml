@@ -1,0 +1,70 @@
+program: code2seq.py
+method: bayes
+command:
+  - python3
+  - ${program}
+  - "--data"
+  - "data/java_dataset/java_dataset"
+  - "--test"
+  - "data/java_dataset/java_dataset.val.c2s"
+  - ${args}
+metric:
+  name: val_precision
+  goal: maximize
+parameters:
+  BATCH_SIZE:
+    min: 100
+    max: 140
+  MAX_CONTEXTS:
+    min: 100
+    max: 300
+  SUBTOKENS_VOCAB_MAX_SIZE:
+    min: 120000
+    max: 260000
+  EMBEDDINGS_SIZE:
+    min: 64
+    max: 256
+  DECODER_SIZE:
+    min: 250
+    max: 400
+  NUM_DECODER_LAYERS:
+    min: 1
+    max: 2
+  MAX_PATH_LENGTH:
+    min: 5
+    max: 25
+  MAX_NAME_PARTS:
+    min: 2
+    max: 10
+  EMBEDDINGS_DROPOUT_KEEP_PROB:
+    min: 0.4
+    max: 0.9
+  RNN_DROPOUT_KEEP_PROB:
+    min: 0.3
+    max: 0.8
+
+##### config.BATCH_SIZE = 128
+# Batch size during training.
+# Was 512 in paper version, but decreased to prevent
+# ResourceExhaustedError when running on GPU-s with less than 16GB of memory
+##### config.MAX_CONTEXTS = 200
+# The number of contexts to sample in each example during training
+# (resampling a different subset of this size every training iteration).
+##### config.SUBTOKENS_VOCAB_MAX_SIZE = 190000
+# The max size of the subtoken vocabulary.
+##### config.EMBEDDINGS_SIZE = 128
+# Embedding size for subtokens, AST nodes and target symbols.
+##### config.RNN_SIZE = EMBEDDINGS_SIZE * 2 (seems that rnn inputs are embeddings so tied the size to EMBEDDINGS_SIZE)
+# The total size of the two LSTMs that are used to embed the paths if `config.BIRNN` is `True`, or the size of the single LSTM if `config.BIRNN` is `False`.
+##### config.DECODER_SIZE = 320
+# Size of each LSTM layer in the decoder.
+##### config.NUM_DECODER_LAYERS = 1
+# Number of decoder LSTM layers. Can be increased to support long target sequences.
+##### config.MAX_PATH_LENGTH = 8 + 1
+# The max number of nodes in a path
+##### config.MAX_NAME_PARTS = 5
+# The max number of subtokens in an input token. If the token is longer, only the first subtokens will be read.
+#### config.EMBEDDINGS_DROPOUT_KEEP_PROB = 0.75
+# Dropout for embedding layer
+#### config.RNN_DROPOUT_KEEP_PROB = 0.5
+# Dropout for RNN layer
