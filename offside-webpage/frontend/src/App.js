@@ -17,24 +17,24 @@ function App() {
                 {/*<!-- Banner -->*/}
                 <section id="banner">
                     <div className="inner">
-                        <h1>OffSide</h1>
-                        <p>A bug detector based on distributed representation of code.</p>
+                        <h1>Learning Off-By-One Mistakes</h1>
+                        <p>An Empirical Study on Different Deep Learning Models.</p>
                         <div className="row justify-content-center">
                             <div className="col-1-xsmall my-auto">
-                                <a target="_blank" rel="noopener noreferrer" href="https://deeptestconf.github.io/pdfs/2020-Briem-DeepTest.pdf">
+                                <a target="_blank" rel="noopener noreferrer" href="https://repository.tudelft.nl/islandora/object/uuid%3A1fe836a3-1874-497e-b05e-666588168717">
                                     <img alt="paper" src={require('./images/paper.png')} />
                                 </a>
                             </div>
                             <div className="col-3-xsmall pl-1 my-auto">
-                                <span><u><a target="_blank" rel="noopener noreferrer" href="https://deeptestconf.github.io/pdfs/2020-Briem-DeepTest.pdf">Paper</a></u></span>
+                                <span><u><a target="_blank" rel="noopener noreferrer" href="https://repository.tudelft.nl/islandora/object/uuid%3A1fe836a3-1874-497e-b05e-666588168717">Paper</a></u></span>
                             </div>
                             <div className="col-1-xsmall my-auto">
-                                <a target="_blank" rel="noopener noreferrer" href="https://github.com/serg-ml4se-2019/group5-deep-bugs">
+                                <a target="_blank" rel="noopener noreferrer" href="https://github.com/hsellik/thesis">
                                     <img alt="github" src={require('./images/github.png')} />
                                 </a>
                             </div>
                             <div className="col-3-xsmall pl-1 my-auto">
-                                <span><u><a target="_blank" rel="noopener noreferrer" href="https://github.com/serg-ml4se-2019/group5-deep-bugs">GitHub</a></u></span>
+                                <span><u><a target="_blank" rel="noopener noreferrer" href="https://github.com/hsellik/thesis">GitHub</a></u></span>
                             </div>
                         </div>
                     </div>
