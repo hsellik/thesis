@@ -1,13 +1,9 @@
 # code2seq
-This is an official implementation of the model described in:
+This is the modified implementation of the model described in:
 
-[Uri Alon](http://urialon.cswp.cs.technion.ac.il), [Shaked Brody](http://www.cs.technion.ac.il/people/shakedbr/), [Omer Levy](https://levyomer.wordpress.com) and [Eran Yahav](http://www.cs.technion.ac.il/~yahave/), "code2seq: Generating Sequences from Structured Representations of Code" [[PDF]](https://openreview.net/pdf?id=H1gKYo09tX)
+**Learning Off-By-One Mistakes: An Empirical Study on Different Deep Learning Models**  
 
-Appeared in **ICLR'2019** (**poster** available [here](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2019/05/ICLR19_poster_code2seq.pdf))
-
-An **online demo** is available at [https://code2seq.org](https://code2seq.org).
-
-This is a TensorFlow implementation of the network, with Java and C# extractors for preprocessing the input code. 
+This is a TensorFlow implementation of the network, with Java for preprocessing the input code. 
 It can be easily extended to other languages, 
 since the TensorFlow network is agnostic to the input programming language (see [Extending to other languages](#extending-to-other-languages).
 Contributions are welcome.
@@ -15,10 +11,7 @@ Contributions are welcome.
 <center style="padding: 40px"><img width="70%" src="https://github.com/tech-srl/code2seq/raw/master/images/network.png" /></center>
 
 ## See also:
-  * **Structural Language Models for Any-Code Generation** is a new paper that learns to generate the missing code within a larger code snippet. This is similar to code completion, but is able to predict complex expressions rather than a single token at a time. See [PDF](https://arxiv.org/pdf/1910.00577.pdf) (demo: soon).
-  * **Adversarial Examples for Models of Code** is a new paper that shows how to slightly mutate the input code snippet of code2vec and GNNs models (thus, introducing adversarial examples), such that the model (code2vec or GNNs) will output a prediction of our choice. See [PDF](https://arxiv.org/pdf/1910.07517.pdf) (code: soon).
-  * **Neural Reverse Engineering of Stripped Binaries** is a new paper that learns to predict procedure names in stripped binaries, thus use neural networks for reverse engineering. See [PDF](https://arxiv.org/pdf/1902.09122) (code: soon).
-  * **code2vec** (POPL'2019) is our previous model. It can only generate a single label at a time (rather than a sequence as code2seq), but it is much faster to train (because of its simplicity). See [PDF](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf), demo at [https://code2vec.org](https://code2vec.org) and [code](https://github.com/tech-srl/code2vec/).
+ * **code2vec** (POPL'2019) is our previous model. It can only generate a single label at a time (rather than a sequence as code2seq), but it is much faster to train (because of its simplicity). See [PDF](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf), demo at [https://code2vec.org](https://code2vec.org) and [code](https://github.com/tech-srl/code2vec/).
 
 
 Table of Contents
@@ -50,23 +43,13 @@ Table of Contents
 ## Quickstart
 ### Step 0: Cloning this repository
 ```
-git clone https://github.com/tech-srl/code2seq
+git clone https://github.com/hsellik/thesis
 cd code2seq
 ```
 
 ### Step 1: Creating a new dataset from Java sources
 To obtain a preprocessed dataset to train a network on, you can either download our
 preprocessed dataset, or create a new dataset from Java source files.
-
-#### Download our preprocessed dataset Java-large dataset (~16M examples, compressed: 11G, extracted 125GB)
-```
-mkdir data
-cd data
-wget https://s3.amazonaws.com/code2seq/datasets/java-large-preprocessed.tar.gz
-tar -xvzf java-large-preprocessed.tar.gz
-```
-This will create a `data/java-large/` sub-directory, containing the files that hold training, test and validation sets,
-and a dict file for various dataset properties.
 
 #### Creating and preprocessing a new Java dataset
 To create and preprocess a new dataset (for example, to compare code2seq to another model on another dataset):
@@ -76,17 +59,6 @@ To create and preprocess a new dataset (for example, to compare code2seq to anot
 
 ### Step 2: Training a model
 You can either download an already trained model, or train a new model using a preprocessed dataset.
-
-#### Downloading a trained model (137 MB)
-We already trained a model for 52 epochs on the data that was preprocessed in the previous step. This model is the same model that was 
- used in the paper and the same model that serves the demo at [code2seq.org](code2seq.org).
-```
-wget https://s3.amazonaws.com/code2seq/model/java-large/java-large-model.tar.gz
-tar -xvzf java-large-model.tar.gz
-```
-
-##### Note:
-This trained model is in a "released" state, which means that we stripped it from its training parameters and can thus be used for inference, but cannot be further trained. 
 
 #### Training a model from scratch
 To train a model from scratch:
@@ -246,69 +218,6 @@ To download the preprocessed datasets, use:
 
 ### C#
 The C# dataset used in the Code Captioning task can be downloaded from the [CodeNN](https://github.com/sriniiyer/codenn/) repository.
-
-## Baselines
-### Using the trained model
-For the NMT baselines (BiLSTM, Transformer) we used the implementation of [OpenNMT-py](http://opennmt.net/OpenNMT-py/).
-The trained BiLSTM model is available here:
-`https://code2seq.s3.amazonaws.com/lstm_baseline/model_acc_62.88_ppl_12.03_e16.pt`
-
-Test+validation sources and targets:
-```
-https://code2seq.s3.amazonaws.com/lstm_baseline/test_expected_actual.txt
-https://code2seq.s3.amazonaws.com/lstm_baseline/test_source.txt
-https://code2seq.s3.amazonaws.com/lstm_baseline/test_target.txt
-https://code2seq.s3.amazonaws.com/lstm_baseline/val_source.txt
-https://code2seq.s3.amazonaws.com/lstm_baseline/val_target.txt
-```
-
-The command line for "translating" a "source" file to a "target" is:
-`python3 translate.py -model model_acc_62.88_ppl_12.03_e16.pt -src test_source.txt -output translation_epoch16.txt -gpu 0`
-
-This results in a `translation_epoch16.txt` which we compare to `test_target.txt` to compute the score.
-The file `test_expected_actual.txt` is a line-by-line concatenation of the true reference ("expected") with the corresponding prediction (the "actual").
-
-### Creating data for the baseline
-We first modified the JavaExtractor (the same one as in this) to locate the methods to train on and print them to a file where each method is a single line. This modification is currently not checked in, but instead of extracting paths, it just prints `node.toString()` and replaces "\n" with space, where `node` is the object holding the AST node of type `MethodDeclaration`.
-
-Then, we tokenized (including sub-tokenization of identifiers, i.e., `"ArrayList"-> ["Array","List"])` each method body using `javalang`, using [this](baseline_tokenization/subtokenize_nmt_baseline.py) script (which can be run on [this](baseline_tokenization/input_example.txt) input example).
-So a program of:
-```
-void methodName(String fooBar) {
-    System.out.println("hello world");
-}
-```
-
-should be printed by the modified JavaExtractor as:
-
-```method name|void (String fooBar){ System.out.println("hello world");}```
-
-and the tokenization script would turn it into: 
-
-```void ( String foo Bar ) { System . out . println ( " hello world " ) ; }```
-
-and the label to be predicted, i.e., "method name", into a separate file.
-
-OpenNMT-py can then be trained over these training source and target files.
-
-## Docker
-This docker image contains code for preprocessing and training.
-#### Requirements
-* Docker version >= 19.3
-* [Nvidia Container Toolkit](https://github.com/NVIDIA/nvidia-docker#ubuntu-16041804-debian-jessiestretchbuster)
-## Building the Image   
-Run in root: ```docker build -t code2seq .```  
-##### Running Preprocessing and Training
-To run the docker image, run the command in project root, note that the 
-training, testing and validation data must be in `data` folder as specified in [preprocess.sh](preprocess.sh). If you 
-make naming changes to preprocess, you probably want to change [train.sh](train.sh) as well:  
-```docker run --name code2seq -it -v ${PWD}/data:/app/data -v ${PWD}/models:/app/models code2seq```
-##### Only preprocessing
-```docker run --name code2vec -it -v ${PWD}/data:/app/data code2seq ./preprocess.sh```
-##### Only training
-```docker run --name code2vec -it -v ${PWD}/data:/app/data -v ${PWD}/models:/app/models code2seq ./train.sh```
-##### Data
-Preprocessed data can be found in ```data``` and trained model under ```models```.
 
 ## Citation 
 

@@ -1,23 +1,11 @@
 # Code2vec
 A neural network for learning distributed representations of code.
-This is an official implementation of the model described in:
+This is the modified implementation of the model described in:
 
-[Uri Alon](http://urialon.cswp.cs.technion.ac.il), [Meital Zilberstein](http://www.cs.technion.ac.il/~mbs/), [Omer Levy](https://levyomer.wordpress.com) and [Eran Yahav](http://www.cs.technion.ac.il/~yahave/),
-"code2vec: Learning Distributed Representations of Code", POPL'2019 [[PDF]](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
-
-_**October 2018** - The paper was accepted to [POPL'2019](https://popl19.sigplan.org)_!
-
-_**April 2019** - The talk video is available [here](https://www.youtube.com/watch?v=EJ8okcxL2Iw)_.
-
-_**July 2019** - Add `tf.keras` model implementation (see [here](#choosing-implementation-to-use))._
-
-An **online demo** is available at [https://code2vec.org/](https://code2vec.org/).
+**Learning Off-By-One Mistakes: An Empirical Study on Different Deep Learning Models**  
 
 ## See also:
   * **code2seq** (ICLR'2019) is our newer model. It uses LSTMs to encode paths node-by-node (rather than monolithic path embeddings as in code2vec), and an LSTM to decode a target sequence (rather than predicting a single label at a time as in code2vec). See [PDF](https://openreview.net/pdf?id=H1gKYo09tX), demo at [http://www.code2seq.org](http://www.code2seq.org) and [code](https://github.com/tech-srl/code2seq/).
-  * **Structural Language Models for Any-Code Generation** is a new paper that learns to generate the missing code within a larger code snippet. This is similar to code completion, but is able to predict complex expressions rather than a single token at a time. See [PDF](https://arxiv.org/pdf/1910.00577.pdf) (demo: soon).
-  * **Adversarial Examples for Models of Code** is a new paper that shows how to slightly mutate the input code snippet of code2vec and GNNs models (thus, introducing adversarial examples), such that the model (code2vec or GNNs) will output a prediction of our choice. See [PDF](https://arxiv.org/pdf/1910.07517.pdf) (code: soon).
-  * **Neural Reverse Engineering of Stripped Binaries** is a new paper that learns to predict procedure names in stripped binaries, thus use neural networks for reverse engineering. See [PDF](https://arxiv.org/pdf/1902.09122) (code: soon).
 
 This is a TensorFlow implementation, designed to be easy and useful in research, 
 and for experimenting with new ideas in machine learning for code tasks.
@@ -71,21 +59,12 @@ Table of Contents
 ## Quickstart
 ### Step 0: Cloning this repository
 ```
-git clone https://github.com/tech-srl/code2vec
+git clone https://github.com/hsellik/thesis
 cd code2vec
 ```
 
 ### Step 1: Creating a new dataset from java sources
-In order to have a preprocessed dataset to train a network on, you can either download our
-preprocessed dataset, or create a new dataset of your own.
-
-#### Download our preprocessed dataset of ~14M examples (compressed: 6.3GB, extracted 32GB)
-```
-wget https://s3.amazonaws.com/code2vec/data/java14m_data.tar.gz
-tar -xvzf java14m_data.tar.gz
-```
-This will create a data/java14m/ sub-directory, containing the files that hold that training, test and validation sets,
-and a vocabulary file for various dataset properties.
+In order to have a preprocessed dataset to train a network on, you can create a new dataset of your own.
 
 #### Creating and preprocessing a new Java dataset
 In order to create and preprocess a new dataset (for example, to compare code2vec to another model on another dataset):
@@ -95,28 +74,6 @@ In order to create and preprocess a new dataset (for example, to compare code2ve
 
 ### Step 2: Training a model
 You can either download an already-trained model, or train a new model using a preprocessed dataset.
-
-#### Downloading a trained model (1.4 GB)
-We already trained a model for 8 epochs on the data that was preprocessed in the previous step.
-The number of epochs was chosen using [early stopping](https://en.wikipedia.org/wiki/Early_stopping), as the version that maximized the F1 score on the validation set. This model can be downloaded [here](https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz) or using:
-```
-wget https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz
-tar -xvzf java14m_model.tar.gz
-```
-
-##### Note:
-This trained model is in a "released" state, which means that we stripped it from its training parameters and can thus be used for inference, but cannot be further trained. If you use this trained model in the next steps, use 'saved_model_iter8.release' instead of 'saved_model_iter8' in every command line example that loads the model such as: '--load models/java14_model/saved_model_iter8'. To read how to release a model, see [Releasing the model](#releasing-the-model).
-
-#### Downloading a trained model (3.5 GB) _which can be further trained_
-
-A non-stripped trained model can be obtained [here](https://s3.amazonaws.com/code2vec/model/java14m_model_trainable.tar.gz) or using:
-
-```
-wget https://s3.amazonaws.com/code2vec/model/java14m_model_trainable.tar.gz
-tar -xvzf java14m_model_trainable.tar
-```  
-
-This model weights more than twice than the stripped version, and it is recommended only if you wish to continue training a model which is already trained. To continue training this trained model, use the `--load` flag to load the trained model; the `--data` flag to point to the new dataset to train on; and the `--save` flag to provide a new save path.
 
 #### Training a model from scratch
 To train a model from scratch:
@@ -228,49 +185,6 @@ python3 code2vec.py --load models/java14_model/saved_model_iter8 --release
 This will save a copy of the trained model with the '.release' suffix.
 A "released" model usually takes 3x less disk space.
 
-### Exporting the trained token vectors and target vectors
-Token and target embeddings are available to download: 
-
-[[Token vectors]](https://s3.amazonaws.com/code2vec/model/token_vecs.tar.gz) [[Method name vectors]](https://s3.amazonaws.com/code2vec/model/target_vecs.tar.gz)
-
-These saved embeddings are saved without subtoken-delimiters ("*toLower*" is saved as "*tolower*").
-
-In order to export embeddings from a trained model, use the "--save_w2v" and "--save_t2v" flags:
-
-Exporting the trained *token* embeddings:
-```
-python3 code2vec.py --load models/java14_model/saved_model_iter8.release --save_w2v models/java14_model/tokens.txt
-```
-Exporting the trained *target* (method name) embeddings:
-```
-python3 code2vec.py --load models/java14_model/saved_model_iter8.release --save_t2v models/java14_model/targets.txt
-```
-This saves the tokens/targets embedding matrices in word2vec format to the specified text file, in which:
-the first line is: \<vocab_size\> \<dimension\>
-and each of the following lines contains: \<word\> \<float_1\> \<float_2\> ... \<float_dimension\>
-
-These word2vec files can be manually parsed or easily loaded and inspected using the [gensim](https://radimrehurek.com/gensim/models/word2vec.html) python package:
-```python
-python3
->>> from gensim.models import KeyedVectors as word2vec
->>> vectors_text_path = 'models/java14_model/targets.txt' # or: `models/java14_model/tokens.txt'
->>> model = word2vec.load_word2vec_format(vectors_text_path, binary=False)
->>> model.most_similar(positive=['equals', 'to|lower']) # or: 'tolower', if using the downloaded embeddings
->>> model.most_similar(positive=['download', 'send'], negative=['receive'])
-```
-The above python commands will result in the closest name to both "equals" and "to|lower", which is "equals|ignore|case".
-Note: In embeddings that were exported manually using the "--save_w2v" or "--save_t2v" flags, the input token and target words are saved using the symbol "|" as a subtokens delimiter ("*toLower*" is saved as: "*to|lower*"). In the embeddings that are available to download (which are the same as in the paper), the "|" symbol is not used, thus "*toLower*" is saved as "*tolower*".
-
-### Exporting the code vectors for the given code examples
-The flag `--export_code_vectors` allows to export the code vectors for the given examples. 
-
-If used with the `--test <TEST_FILE>` flag,
-a file named `<TEST_FILE>.vectors` will be saved in the same directory as `<TEST_FILE>`. 
-Each row in the saved file is the code vector of the code snipped in the corresponding row in `<TEST_FILE>`.
- 
-If used with the `--predict` flag, the code vector will be printed to console.
-
-
 ## Extending to other languages  
 
 This project currently supports Java and C\# as the input languages.
@@ -330,24 +244,6 @@ wget https://s3.amazonaws.com/code2vec/data/java-large_data.tar.gz
 A dataset of the 9500 top-starred Java projects from GitHub that were created
 since January 2007. It contains 9000 projects for training, 200 for validation and 300 for
 testing. Overall, it contains about 16M examples.
-
-## Docker
-This docker image contains code for preprocessing and training.
-#### Requirements
-* Docker version >= 19.3
-* [Nvidia Container Toolkit](https://github.com/NVIDIA/nvidia-docker#ubuntu-16041804-debian-jessiestretchbuster)
-##### Building the Image   
-Run in project root: ```docker build -t code2vec .```  
-##### Running Preprocessing and Training
-To run the docker image, run the command in project root, note that the 
-training, testing and validation data must be in `data` folder as specified in [preprocess.sh](preprocess.sh):  
-```docker run --name code2seq -it -v ${PWD}/data:/app/data -v ${PWD}/models:/app/models code2vec```
-##### Only preprocessing
-```docker run --name code2vec -it -v ${PWD}/data:/app/data code2vec ./preprocess.sh```
-##### Only training
-```docker run --name code2vec -it -v ${PWD}/data:/app/data -v ${PWD}/models:/app/models code2vec ./train.sh```
-##### Data
-Preprocessed data can be found in ```data``` and trained model under ```models```.
 
 ## Citation
 
