@@ -51,7 +51,7 @@ if __name__ == '__main__':
     else:
         config = Config.get_balanced_off_by_one_config(args)
 
-    #wandb.init(config=config, project="msc_thesis_hendrig")
+    wandb.init(config=config, project="msc_thesis_hendrig")
     #config.update_values(wandb.config)
 
     os.environ["CUDA_VISIBLE_DEVICES"] = str(GPUSelector(config).pick_gpu_lowest_memory())
