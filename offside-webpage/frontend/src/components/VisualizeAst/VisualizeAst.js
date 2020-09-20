@@ -30,14 +30,12 @@ export default class VisualizeAst extends Component {
             resultBtnText: "Result",
             resultConfidence: 0.00,
             mouseOverMarkers: [],
-            code: `public void processCode() {
-    String a = "a";
-    if (a != null) {
-        System.out.println("asdfasd");
-    } 
-    if (5 < 10) {
-        System.out.println("bee");
-    }
+            code: `public String[] reverseArray(final String[] array) {
+  final String[] newArray = new String[array.length];
+  for (int index = 0; index < array.length; index++) {
+    newArray[array.length - index - 1] = array[index];
+  }
+  return newArray;
 }`,
             myTreeData3: {
                 "paths": [
@@ -350,7 +348,8 @@ export default class VisualizeAst extends Component {
                 y: dimensions.height / 2
             }
         });
-        this.inside(this.state.myTreeData3.ast)
+        this.inside(this.state.myTreeData3.ast);
+        this.createRequest();
     }
 
     inside(ast) {

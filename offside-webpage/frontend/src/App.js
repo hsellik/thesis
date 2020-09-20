@@ -86,7 +86,7 @@ function App() {
                 {/*<!-- Footer -->*/}
                 <footer id="footer">
                     <div className="copyright">
-                        &copy; Hendrig Sellik. Photos: <a href="https://commons.wikimedia.org/wiki/File:Mekel_Park_-_Campus_Delft_University_of_Technology_01.jpg">Wikimedia</a>, <a href="https://unsplash.co/">Unsplash</a>. Video: <a href="https://www.youtube.com/user/Mecanoo84">Mecanoo</a>.
+                        &copy; Hendrig Sellik. Photos: <a href="https://commons.wikimedia.org/wiki/File:Mekel_Park_-_Campus_Delft_University_of_Technology_01.jpg">Wikimedia</a>. Video: <a href="https://www.youtube.com/user/Mecanoo84">Mecanoo</a>.
                     </div>
                 </footer>
             </div>
