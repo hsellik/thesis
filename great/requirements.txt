@@ -1,4 +1,0 @@
-tensorflow-gpu >= 2.2.0
-pyaml
-wandb
-scikit-learn==0.22.1

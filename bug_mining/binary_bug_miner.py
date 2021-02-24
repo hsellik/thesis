@@ -7,7 +7,11 @@ from pydriller import RepositoryMining, GitRepository
 
 """
 This script mines off-by-one errors from a specified 
-local directory containing Java project repositories
+local directory containing Java project repositories.
+
+The main principle behind this is that it tries to find 
+commits with only one change on one line. And the change must be 
+an off-by-one fix (< to <= , >= to >, etc.)
 """
 
 home = str(Path.home())

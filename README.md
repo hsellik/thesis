@@ -1,14 +1,12 @@
-# Using Deep Learning to Detect Off-by-One Errors in Java Source Code
-This repository contains the data and code to replicate Master's Thesis on models of source code that find off-by-one 
-erros in Java source code.
+# Learning Off-By-One Mistakes: An Empirical Study
+This repository contains the data and code to replicate MSR 2021 paper `Learning Off-By-One Mistakes: An Empirical Study`.
+It contains the models' source code that find off-by-one erros in Java source code.
 
 ## Quick Start
 There are 3 different models:  
 * [Code2Seq](code2seq)  
 * [Code2Vec](code2vec)  
-* [GREAT](great)  
 * [Baseline](baseline)  
-* [Bugram](bugram)  
 
 You can find documentation on using them in their respective folders.
 
